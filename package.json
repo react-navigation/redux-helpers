@@ -9,24 +9,7 @@
     "invariant": "^2.2.2"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.0",
-    "babel-plugin-transform-define": "^1.3.0",
-    "babel-preset-es2015": "^6.24.1",
-    "babel-preset-react": "^6.24.1",
-    "babel-preset-react-native-syntax": "^1.0.0",
-    "babel-preset-stage-1": "^6.24.1",
     "flow-bin": "^0.64.0"
   },
-  "files": [
-    "src",
-    "lib",
-    "lib-rn"
-  ],
-  "scripts": {
-    "build": "npm run build-web && npm run build-rn && npm run build-dot-flow",
-    "build-web": "BABEL_ENV=publish-web babel src -d lib",
-    "build-rn": "BABEL_ENV=publish-rn babel src -d lib-rn",
-    "build-dot-flow": "find ./src -name '*.js' | while read filepath; do cp $filepath `echo $filepath | sed 's/\\/src\\//\\/lib\\//g'`.flow && cp $filepath `echo $filepath | sed 's/\\/src\\//\\/lib-rn\\//g'`.flow; done"
-  }
+  "files": [ "src" ]
 }
