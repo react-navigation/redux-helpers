@@ -16,4 +16,4 @@ This repo contains Redux middleware and utils for React Navigation.
 
 ## Use
 
-Consult the [React Navigation](https://reactnavigation.org/docs/guides/redux) docs for how to use this library.
+Consult the [React Navigation](https://reactnavigation.org/docs/redux-integration.html) docs for how to use this library.
