@@ -29,6 +29,7 @@ function createReactNavigationReduxMiddleware<State: {}>(
         lastState: navStateSelector(oldState),
       })
     );
+    return result;
   };
 }
 
@@ -58,4 +59,3 @@ export {
   createReactNavigationReduxMiddleware,
   createReduxBoundAddListener,
 };
-
