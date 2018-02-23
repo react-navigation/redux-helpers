@@ -1,5 +1,8 @@
 // @flow
 
+export * from './types';
+export * from './reducer';
+
 import type {
   NavigationEventCallback,
   NavigationState,
