@@ -2,11 +2,14 @@
 
 import type {
   NavigationEventCallback,
+  NavigationEventPayload,
   NavigationState,
 } from 'react-navigation';
 import type { Middleware } from 'redux';
 
 import invariant from 'invariant';
+
+import { initAction } from './reducer';
 
 const reduxSubscribers = new Map();
 
@@ -21,24 +24,32 @@ function createReactNavigationReduxMiddleware<State: {}>(
     const newState = store.getState();
     const subscribers = reduxSubscribers.get(key);
     invariant(subscribers, `subscribers set should exist for ${key}`);
-    subscribers.forEach(subscriber =>
-      subscriber({
+    triggerAllSubscribers(
+      subscribers,
+      {
         type: 'action',
         action,
         state: navStateSelector(newState),
         lastState: navStateSelector(oldState),
-      })
+      },
     );
     return result;
   };
+}
+
+function triggerAllSubscribers(
+  subscribers: $ReadOnlyArray<NavigationEventCallback>,
+  payload: NavigationEventPayload,
+) {
+  subscribers.forEach(subscriber => subscriber(payload));
 }
 
 function createReduxBoundAddListener(key: string) {
   invariant(
     reduxSubscribers.has(key),
     "Cannot listen for a key that isn't associated with a Redux store. " +
-      'First call `createReactNavigationReduxMiddleware` so that we know ' +
-      'when to trigger your listener.'
+      "First call `createReactNavigationReduxMiddleware` so that we know " +
+      "when to trigger your listener."
   );
   return (eventName: string, handler: NavigationEventCallback) => {
     if (eventName !== 'action') {
@@ -55,7 +66,27 @@ function createReduxBoundAddListener(key: string) {
   };
 }
 
+function initializeListeners(key: string, state: NavigationState) {
+  const subscribers = reduxSubscribers.get(key);
+  invariant(
+    subscribers,
+    "Cannot initialize listeners for a key that isn't associated with a " +
+      "Redux store. First call `createReactNavigationReduxMiddleware` so " +
+      "that we know when to trigger your listener.",
+  );
+  triggerAllSubscribers(
+    subscribers,
+    {
+      type: 'action',
+      action: initAction,
+      state: state,
+      lastState: null,
+    },
+  );
+}
+
 export {
   createReactNavigationReduxMiddleware,
   createReduxBoundAddListener,
+  initializeListeners,
 };

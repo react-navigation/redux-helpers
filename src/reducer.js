@@ -6,15 +6,13 @@ import type { Navigator, ReducerState } from './types'
 
 import { NavigationActions } from "react-navigation";
 
-function createNavigationReducer(navigator: Navigator): Reducer<*, *> {
-  const initialState = navigator.router.getStateForAction(
-    NavigationActions.init(),
-    null,
-  );
+const initAction = NavigationActions.init();
 
+function createNavigationReducer(navigator: Navigator): Reducer<*, *> {
+  const initialState = navigator.router.getStateForAction(initAction, null);
   return (
     state: ReducerState = initialState,
-    action: NavigationAction
+    action: NavigationAction,
   ): ReducerState => {
     return navigator.router.getStateForAction(action, state);
   };
@@ -22,4 +20,5 @@ function createNavigationReducer(navigator: Navigator): Reducer<*, *> {
 
 export {
   createNavigationReducer,
+  initAction,
 };
