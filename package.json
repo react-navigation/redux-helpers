@@ -15,5 +15,10 @@
   "devDependencies": {
     "flow-bin": "^0.64.0"
   },
-  "files": [ "src" ]
+  "files": [
+    "src"
+  ],
+  "peerDependencies": {
+    "react-navigation": "^1.1.2"
+  }
 }
