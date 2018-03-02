@@ -6,6 +6,7 @@ import type {
   NavigationState,
 } from 'react-navigation';
 import type { Middleware } from 'redux';
+import type { NavStateSelector } from './types';
 
 import invariant from 'invariant';
 
@@ -15,7 +16,7 @@ const reduxSubscribers = new Map();
 
 function createReactNavigationReduxMiddleware<State: {}>(
   key: string,
-  navStateSelector: (state: State) => NavigationState,
+  navStateSelector: NavStateSelector<State>,
 ): Middleware<State, *, *> {
   reduxSubscribers.set(key, new Set());
   return store => next => action => {
