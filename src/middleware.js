@@ -38,7 +38,7 @@ function createReactNavigationReduxMiddleware<State: {}>(
 }
 
 function triggerAllSubscribers(
-  subscribers: $ReadOnlyArray<NavigationEventCallback>,
+  subscribers: Set<NavigationEventCallback>,
   payload: NavigationEventPayload,
 ) {
   subscribers.forEach(subscriber => subscriber(payload));
