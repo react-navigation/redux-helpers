@@ -713,7 +713,7 @@ declare module 'react-navigation' {
     SET_PARAMS: 'Navigation/SET_PARAMS',
     URI: 'Navigation/URI',
     back: {
-      (payload: { key?: ?string }): NavigationBackAction,
+      (payload?: { key?: ?string }): NavigationBackAction,
       toString: () => string,
     },
     init: {
