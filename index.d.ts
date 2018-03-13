@@ -2,7 +2,7 @@ declare module 'react-navigation-redux-helpers' {
     import { NavigationContainer, NavigationEventCallback, NavigationEventSubscription, NavigationState } from 'react-navigation';
     import { Middleware, Reducer } from 'redux';
 
-    export type Navigator = NavigationContainer<any, any, any>;
+    export type Navigator = NavigationContainer;
 
     export type ReducerState = NavigationState | null | undefined;
 
@@ -14,5 +14,5 @@ declare module 'react-navigation-redux-helpers' {
     export function createReduxBoundAddListener
     (key: string): (eventName: string, callback: NavigationEventCallback) => NavigationEventSubscription;
 
-    export function createNavigationReducer(navigator: Navigator): Reducer<any, any>;
+    export function createNavigationReducer(navigator: Navigator): Reducer<ReducerState>;
 }
