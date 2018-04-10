@@ -1,7 +1,7 @@
 {
   "name": "react-navigation-redux-helpers",
   "description": "Redux middleware and utils for React Navigation",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "main": "src/index.js",
   "author": "Ashoat Tevosyan (https://github.com/ashoat)",
   "license": "BSD-2-Clause",
@@ -16,7 +16,8 @@
     "flow-bin": "^0.64.0"
   },
   "files": [
-    "src"
+    "src",
+    "index.d.ts"
   ],
   "peerDependencies": {
     "react-navigation": "^1.1.2"
