@@ -14,7 +14,7 @@ function createNavigationReducer(navigator: Navigator): Reducer<*, *> {
     state: ReducerState = initialState,
     action: NavigationAction,
   ): ReducerState => {
-    return navigator.router.getStateForAction(action, state);
+    return navigator.router.getStateForAction(action, state) || state;
   };
 };
 
