@@ -43,7 +43,7 @@ function initializeListeners(key: string, state: NavigationState): void;
 * Param `key` needs to be consistent with other calls for the same store. See above.
 * Param `state` is the navigation state for your app.
 
-### `createNavigationPropConstructor` (required, `react-navigation@2.0.2` or later)
+### `createNavigationPropConstructor` (required, `react-navigation@2.0.2` or later only)
 
 ```js
 function createNavigationPropConstructor(
@@ -60,7 +60,7 @@ function createNavigationPropConstructor(
 * Param `dispatch` is your Redux store's dispatch function.
 * Param `state` is the navigation state for your app.
 
-### `createReduxBoundAddListener` (optional, required if earlier than `react-navigation@2.0.2`)
+### `createReduxBoundAddListener` (alternative to `createNavigationPropConstructor`)
 
 ```js
 function createReduxBoundAddListener(
