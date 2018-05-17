@@ -1,9 +1,12 @@
 // @flow
 
-import type {
-  NavigationEventCallback,
-  NavigationEventPayload,
-  NavigationState,
+import {
+  type NavigationEventCallback,
+  type NavigationEventPayload,
+  type NavigationState,
+  type NavigationDispatch,
+  type NavigationScreenProp,
+  getNavigationActionCreators,
 } from 'react-navigation';
 import type { Middleware } from 'redux';
 
@@ -85,8 +88,31 @@ function initializeListeners(key: string, state: NavigationState) {
   );
 }
 
+function createNavigationPropConstructor(
+  key: string,
+) {
+  const reactNavigationAddListener = createReduxBoundAddListener(key);
+  return (
+    dispatch: NavigationDispatch,
+    state: NavigationState,
+  ): NavigationScreenProp<NavigationState> => {
+    const navigation: $Shape<NavigationScreenProp<NavigationState>> = {
+      dispatch,
+      state,
+      addListener: reactNavigationAddListener,
+    };
+    const actionCreators = getNavigationActionCreators(state);
+    Object.keys(actionCreators).forEach(actionName => {
+      navigation[actionName] = (...args) =>
+        dispatch(actionCreators[actionName](...args));
+    });
+    return navigation;
+  };
+}
+
 export {
   createReactNavigationReduxMiddleware,
   createReduxBoundAddListener,
   initializeListeners,
+  createNavigationPropConstructor,
 };
