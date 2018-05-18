@@ -28,6 +28,7 @@ function createReactNavigationReduxMiddleware<State: {}>(
     const subscribers = reduxSubscribers.get(key);
     invariant(subscribers, `subscribers set should exist for ${key}`);
     triggerAllSubscribers(
+      key,
       subscribers,
       {
         type: 'action',
@@ -40,11 +41,41 @@ function createReactNavigationReduxMiddleware<State: {}>(
   };
 }
 
+let delaySubscriberTriggerUntilReactReduxConnectTriggers = false;
+const delayedTriggers = new Map();
+
 function triggerAllSubscribers(
+  key: string,
   subscribers: Set<NavigationEventCallback>,
   payload: NavigationEventPayload,
 ) {
-  subscribers.forEach(subscriber => subscriber(payload));
+  const trigger = () => subscribers.forEach(subscriber => subscriber(payload));
+  if (!delaySubscriberTriggerUntilReactReduxConnectTriggers) {
+    trigger();
+    return;
+  }
+  const existingTriggers = delayedTriggers.get(key);
+  if (existingTriggers) {
+    existingTriggers.push(trigger);
+  } else {
+    delayedTriggers.set(key, [trigger]);
+  }
+}
+
+function triggerDelayedSubscribers(key: string) {
+  const triggers = delayedTriggers.get(key);
+  if (!triggers) {
+    return;
+  }
+  delayedTriggers.delete(key);
+  for (let trigger of triggers) {
+    trigger();
+  }
+}
+
+function createDidUpdateCallback(key: string) {
+  delaySubscriberTriggerUntilReactReduxConnectTriggers = true;
+  return triggerDelayedSubscribers.bind(null, key);
 }
 
 function createReduxBoundAddListener(key: string) {
@@ -78,6 +109,7 @@ function initializeListeners(key: string, state: NavigationState) {
       "that we know when to trigger your listener.",
   );
   triggerAllSubscribers(
+    key,
     subscribers,
     {
       type: 'action',
@@ -86,6 +118,9 @@ function initializeListeners(key: string, state: NavigationState) {
       lastState: null,
     },
   );
+  if (delaySubscriberTriggerUntilReactReduxConnectTriggers) {
+    triggerDelayedSubscribers(key);
+  }
 }
 
 function createNavigationPropConstructor(
@@ -112,6 +147,7 @@ function createNavigationPropConstructor(
 
 export {
   createReactNavigationReduxMiddleware,
+  createDidUpdateCallback,
   createReduxBoundAddListener,
   initializeListeners,
   createNavigationPropConstructor,

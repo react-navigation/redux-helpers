@@ -76,6 +76,17 @@ function createReduxBoundAddListener(
 * Param `key` needs to be consistent with other calls for the same store. See above.
 * `addListener` is a necessary property in the `navigation` object that you need to pass as a prop into your root navigator.
 
+### `createDidUpdateCallback` (optional)
+
+```js
+function createNavigationReducer(key: string): () => void;
+```
+
+* Without this function, the first events (ie. `didFocus`) for a screen that hasn't been rendered yet won't trigger `addListener`
+* This happens because our middleware gets triggered before that screen's `componentDidMount` can call `addListener`
+* Param `key` needs to be consistent with other calls for the same store. See above.
+* This function should get called in global scope, and will return a callback that should be called in your main component's `componentDidUpdate`
+
 ### `createNavigationReducer` (optional)
 
 ```js
