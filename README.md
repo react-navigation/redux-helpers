@@ -82,10 +82,10 @@ function createReduxBoundAddListener(
 function createNavigationReducer(key: string): () => void;
 ```
 
-* Without this function, the first events (ie. `didFocus`) for a screen that hasn't been rendered yet won't trigger `addListener`
-* This happens because our middleware gets triggered before that screen's `componentDidMount` can call `addListener`
+* Without this function, the first events (ie. `didFocus`) for a screen that hasn't been rendered yet won't trigger `addListener`.
+* This happens because our middleware gets triggered before that screen's `componentDidMount` can call `addListener`.
 * Param `key` needs to be consistent with other calls for the same store. See above.
-* This function should get called in global scope, and will return a callback that should be called in your main component's `componentDidUpdate`
+* This function should get called in global scope, and will return a callback that should be called in your main component's `componentDidUpdate`.
 
 ### `createNavigationReducer` (optional)
 
@@ -93,7 +93,7 @@ function createNavigationReducer(key: string): () => void;
 function createNavigationReducer(navigator: Navigator): Reducer<*, *>;
 ```
 
-* Call `createNavigationReducer` in the global scope to construct a navigation reducer
-* This basically just wraps `navigator.router.getStateForAction`, which you can call directly if you'd prefer
-* Param `navigator` is your root navigator (React component)
-* Call this reducer from your master reducer (or combine using `combineReducers`)
+* Call `createNavigationReducer` in the global scope to construct a navigation reducer.
+* This basically just wraps `navigator.router.getStateForAction`, which you can call directly if you'd prefer.
+* Param `navigator` is your root navigator (React component).
+* Call this reducer from your master reducer (or combine using `combineReducers`).
