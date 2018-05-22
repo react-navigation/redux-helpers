@@ -79,7 +79,7 @@ function createReduxBoundAddListener(
 ### `createDidUpdateCallback` (optional)
 
 ```js
-function createNavigationReducer(key: string): () => void;
+function createDidUpdateCallback(key: string): () => void;
 ```
 
 * Without this function, the first events (ie. `didFocus`) for a screen that hasn't been rendered yet won't trigger `addListener`.
