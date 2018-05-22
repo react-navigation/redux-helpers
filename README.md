@@ -71,7 +71,7 @@ function createReduxBoundAddListener(
 ) => NavigationEventSubscription;
 ```
 
-* Alternative to `createNavigationPropConstructor`
+* Alternative to `createNavigationPropConstructor`.
 * Call `createReduxBoundAddListener` in the global scope to construct an `addListener` function.
 * Param `key` needs to be consistent with other calls for the same store. See above.
 * `addListener` is a necessary property in the `navigation` object that you need to pass as a prop into your root navigator.
