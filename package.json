@@ -2,9 +2,14 @@
   "name": "react-navigation-redux-helpers",
   "description": "Redux middleware and utils for React Navigation",
   "version": "1.1.1",
-  "main": "src/index.js",
+  "react-native": "src/index.js",
+  "main": "dist/index.js",
   "author": "Ashoat Tevosyan (https://github.com/ashoat)",
   "license": "BSD-2-Clause",
+  "scripts": {
+    "build": "babel src --out-dir dist",
+    "prepublishOnly": "npm run build"
+  },
   "repository": {
     "url": "git@github.com:react-navigation/react-navigation-redux-helpers.git",
     "type": "git"
@@ -13,10 +18,13 @@
     "invariant": "^2.2.2"
   },
   "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-react-native": "^4.0.0",
     "flow-bin": "^0.64.0"
   },
   "files": [
     "src",
+    "dist",
     "index.d.ts"
   ],
   "peerDependencies": {
