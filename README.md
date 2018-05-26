@@ -43,7 +43,7 @@ function initializeListeners(key: string, state: NavigationState): void;
 * Param `key` needs to be consistent with other calls for the same store. See above.
 * Param `state` is the navigation state for your app.
 
-### `createNavigationPropConstructor` (required, `react-navigation@2.0.3` or later only)
+### `createNavigationPropConstructor` (required, `react-navigation@2.0.4` or later only)
 
 ```js
 function createNavigationPropConstructor(
