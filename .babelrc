@@ -1,3 +1,9 @@
 {
-  "presets": ["react-native"]
+  "presets": ["env", "react"],
+  "plugins": [
+    "transform-flow-strip-types",
+    ["transform-define", {
+      "__DEV__": false
+    }]
+  ]
 }
