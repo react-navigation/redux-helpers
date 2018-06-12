@@ -17,6 +17,10 @@ import { initAction } from './reducer';
 
 const reduxSubscribers = new Map();
 
+// screenProps are a legacy concept in react navigation, and should not be used in redux apps
+const EMPTY_SCREEN_PROPS = {};
+const getScreenProps = () => EMPTY_SCREEN_PROPS;
+
 function createReactNavigationReduxMiddleware<State: {}>(
   key: string,
   navStateSelector: (state: State) => NavigationState,
@@ -123,16 +127,11 @@ function createNavigationPropConstructor(key: string) {
     dispatch: NavigationDispatch,
     state: NavigationState,
     router: NavigationRouter,
-    getScreenProps,
-    getCurrentNavigation,
+    getCurrentNavigation: () => NavigationScreenProp<NavigationState>,
   ): NavigationScreenProp<NavigationState> => {
     invariant(
       router,
       `App.router must be provided to createNavigationPropConstructor, as of react-navigation-redux-helpers v2. Learn more: https://reactnavigation.org/docs/en/redux-integration.html#breaking-changes-in-2.3`,
-    );
-    invariant(
-      getScreenProps,
-      `getScreenProps must be provided to createNavigationPropConstructor, as of react-navigation-redux-helpers v2. Learn more: https://reactnavigation.org/docs/en/redux-integration.html#breaking-changes-in-2.3`,
     );
     invariant(
       getCurrentNavigation,
