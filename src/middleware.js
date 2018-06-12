@@ -6,7 +6,8 @@ import {
   type NavigationState,
   type NavigationDispatch,
   type NavigationScreenProp,
-  getNavigationActionCreators,
+  type NavigationRouter,
+  getNavigation,
 } from 'react-navigation';
 import type { Middleware } from 'redux';
 
@@ -27,16 +28,12 @@ function createReactNavigationReduxMiddleware<State: {}>(
     const newState = store.getState();
     const subscribers = reduxSubscribers.get(key);
     invariant(subscribers, `subscribers set should exist for ${key}`);
-    triggerAllSubscribers(
-      key,
-      subscribers,
-      {
-        type: 'action',
-        action,
-        state: navStateSelector(newState),
-        lastState: navStateSelector(oldState),
-      },
-    );
+    triggerAllSubscribers(key, subscribers, {
+      type: 'action',
+      action,
+      state: navStateSelector(newState),
+      lastState: navStateSelector(oldState),
+    });
     return result;
   };
 }
@@ -82,8 +79,8 @@ function createReduxBoundAddListener(key: string) {
   invariant(
     reduxSubscribers.has(key),
     "Cannot listen for a key that isn't associated with a Redux store. " +
-      "First call `createReactNavigationReduxMiddleware` so that we know " +
-      "when to trigger your listener."
+      'First call `createReactNavigationReduxMiddleware` so that we know ' +
+      'when to trigger your listener.',
   );
   return (eventName: string, handler: NavigationEventCallback) => {
     if (eventName !== 'action') {
@@ -105,43 +102,50 @@ function initializeListeners(key: string, state: NavigationState) {
   invariant(
     subscribers,
     "Cannot initialize listeners for a key that isn't associated with a " +
-      "Redux store. First call `createReactNavigationReduxMiddleware` so " +
-      "that we know when to trigger your listener.",
+      'Redux store. First call `createReactNavigationReduxMiddleware` so ' +
+      'that we know when to trigger your listener.',
   );
-  triggerAllSubscribers(
-    key,
-    subscribers,
-    {
-      type: 'action',
-      action: initAction,
-      state: state,
-      lastState: null,
-    },
-  );
+  triggerAllSubscribers(key, subscribers, {
+    type: 'action',
+    action: initAction,
+    state: state,
+    lastState: null,
+  });
   if (delaySubscriberTriggerUntilReactReduxConnectTriggers) {
     triggerDelayedSubscribers(key);
   }
 }
 
-function createNavigationPropConstructor(
-  key: string,
-) {
+function createNavigationPropConstructor(key: string) {
+  const actionSubscribers = new Set();
   const reactNavigationAddListener = createReduxBoundAddListener(key);
   return (
     dispatch: NavigationDispatch,
     state: NavigationState,
+    router: NavigationRouter,
+    getScreenProps,
+    getCurrentNavigation,
   ): NavigationScreenProp<NavigationState> => {
-    const navigation: $Shape<NavigationScreenProp<NavigationState>> = {
-      dispatch,
+    invariant(
+      router,
+      `App.router must be provided to createNavigationPropConstructor, as of react-navigation-redux-helpers v2. Learn more: https://reactnavigation.org/docs/en/redux-integration.html#breaking-changes-in-2.3`,
+    );
+    invariant(
+      getScreenProps,
+      `getScreenProps must be provided to createNavigationPropConstructor, as of react-navigation-redux-helpers v2. Learn more: https://reactnavigation.org/docs/en/redux-integration.html#breaking-changes-in-2.3`,
+    );
+    invariant(
+      getCurrentNavigation,
+      `getCurrentNavigation must be provided to createNavigationPropConstructor, as of react-navigation-redux-helpers v2. Learn more: https://reactnavigation.org/docs/en/redux-integration.html#breaking-changes-in-2.3`,
+    );
+    return getNavigation(
+      router,
       state,
-      addListener: reactNavigationAddListener,
-    };
-    const actionCreators = getNavigationActionCreators(state);
-    Object.keys(actionCreators).forEach(actionName => {
-      navigation[actionName] = (...args) =>
-        dispatch(actionCreators[actionName](...args));
-    });
-    return navigation;
+      dispatch,
+      actionSubscribers,
+      getScreenProps,
+      getCurrentNavigation,
+    );
   };
 }
 
