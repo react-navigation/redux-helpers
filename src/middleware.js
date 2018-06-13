@@ -132,19 +132,25 @@ function initializeListeners(key: string, state: NavigationState) {
 function createNavigationPropConstructor(key: string) {
   const actionSubscribers = new Set();
   const reactNavigationAddListener = createReduxBoundAddListener(key);
-  return (
+  return <State: NavigationState>(
     dispatch: NavigationDispatch,
-    state: NavigationState,
-    router: NavigationRouter,
-    getCurrentNavigation: () => NavigationScreenProp<NavigationState>,
-  ): NavigationScreenProp<NavigationState> => {
+    state: State,
+    router: NavigationRouter<*, *>,
+    getCurrentNavigation: () => NavigationScreenProp<State>,
+  ): NavigationScreenProp<State> => {
     invariant(
       router,
-      `App.router must be provided to createNavigationPropConstructor, as of react-navigation-redux-helpers v2. Learn more: https://reactnavigation.org/docs/en/redux-integration.html#breaking-changes-in-2.3`,
+      "App.router must be provided to createNavigationPropConstructor as of " +
+        "react-navigation-redux-helpers@2.0.0. Learn more: " +
+        "https://reactnavigation.org/docs/en/" +
+        "redux-integration.html#breaking-changes-in-2.3",
     );
     invariant(
       getCurrentNavigation,
-      `getCurrentNavigation must be provided to createNavigationPropConstructor, as of react-navigation-redux-helpers v2. Learn more: https://reactnavigation.org/docs/en/redux-integration.html#breaking-changes-in-2.3`,
+      "getCurrentNavigation must be provided to createNavigationPropConstructor as of " +
+        "react-navigation-redux-helpers@2.0.0. Learn more: " +
+        "https://reactnavigation.org/docs/en/" +
+        "redux-integration.html#breaking-changes-in-2.3",
     );
     return getNavigation(
       router,
@@ -160,7 +166,6 @@ function createNavigationPropConstructor(key: string) {
 export {
   createReactNavigationReduxMiddleware,
   createDidUpdateCallback,
-  createReduxBoundAddListener,
   initializeListeners,
   createNavigationPropConstructor,
 };

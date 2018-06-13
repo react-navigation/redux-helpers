@@ -13,13 +13,15 @@
     "invariant": "^2.2.2"
   },
   "devDependencies": {
-    "flow-bin": "^0.64.0"
+    "flow-bin": "^0.64.0",
+    "react": "^16.4.0"
   },
   "files": [
     "src",
     "index.d.ts"
   ],
   "peerDependencies": {
+    "react": "*",
     "react-navigation": "*"
   }
 }
