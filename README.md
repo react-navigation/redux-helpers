@@ -51,6 +51,8 @@ function createNavigationPropConstructor(
 ): (
   dispatch: NavigationDispatch,
   state: NavigationState,
+  router: NavigationRouter,
+  getCurrentNavigation: () => NavigationScreenProp<NavigationState>,
 ) => NavigationScreenProp<NavigationState>;
 ```
 
@@ -59,6 +61,8 @@ function createNavigationPropConstructor(
 * Prop constructor is called in your main component's `render`.
 * Param `dispatch` is your Redux store's dispatch function.
 * Param `state` is the navigation state for your app.
+* Param `router` can be obtained from your root navigator: `rootNavigator.router`.
+* Param `getCurrentNavigation` returns the current version of this prop. The parent is expected to maintain a copy of the result of the prop constructor call.
 
 ### `createReduxBoundAddListener` (alternative to `createNavigationPropConstructor`)
 

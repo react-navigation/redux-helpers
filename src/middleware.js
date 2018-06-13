@@ -6,7 +6,8 @@ import {
   type NavigationState,
   type NavigationDispatch,
   type NavigationScreenProp,
-  getNavigationActionCreators,
+  type NavigationRouter,
+  getNavigation,
 } from 'react-navigation';
 import type { Middleware } from 'redux';
 
@@ -15,6 +16,11 @@ import invariant from 'invariant';
 import { initAction } from './reducer';
 
 const reduxSubscribers = new Map();
+
+// screenProps are a legacy concept in React Navigation,
+// and should not be used in redux apps
+const EMPTY_SCREEN_PROPS = {};
+const getScreenProps = () => EMPTY_SCREEN_PROPS;
 
 function createReactNavigationReduxMiddleware<State: {}>(
   key: string,
@@ -83,7 +89,7 @@ function createReduxBoundAddListener(key: string) {
     reduxSubscribers.has(key),
     "Cannot listen for a key that isn't associated with a Redux store. " +
       "First call `createReactNavigationReduxMiddleware` so that we know " +
-      "when to trigger your listener."
+      "when to trigger your listener.",
   );
   return (eventName: string, handler: NavigationEventCallback) => {
     if (eventName !== 'action') {
@@ -123,25 +129,31 @@ function initializeListeners(key: string, state: NavigationState) {
   }
 }
 
-function createNavigationPropConstructor(
-  key: string,
-) {
+function createNavigationPropConstructor(key: string) {
+  const actionSubscribers = new Set();
   const reactNavigationAddListener = createReduxBoundAddListener(key);
   return (
     dispatch: NavigationDispatch,
     state: NavigationState,
+    router: NavigationRouter,
+    getCurrentNavigation: () => NavigationScreenProp<NavigationState>,
   ): NavigationScreenProp<NavigationState> => {
-    const navigation: $Shape<NavigationScreenProp<NavigationState>> = {
-      dispatch,
+    invariant(
+      router,
+      `App.router must be provided to createNavigationPropConstructor, as of react-navigation-redux-helpers v2. Learn more: https://reactnavigation.org/docs/en/redux-integration.html#breaking-changes-in-2.3`,
+    );
+    invariant(
+      getCurrentNavigation,
+      `getCurrentNavigation must be provided to createNavigationPropConstructor, as of react-navigation-redux-helpers v2. Learn more: https://reactnavigation.org/docs/en/redux-integration.html#breaking-changes-in-2.3`,
+    );
+    return getNavigation(
+      router,
       state,
-      addListener: reactNavigationAddListener,
-    };
-    const actionCreators = getNavigationActionCreators(state);
-    Object.keys(actionCreators).forEach(actionName => {
-      navigation[actionName] = (...args) =>
-        dispatch(actionCreators[actionName](...args));
-    });
-    return navigation;
+      dispatch,
+      actionSubscribers,
+      getScreenProps,
+      getCurrentNavigation,
+    );
   };
 }
 
