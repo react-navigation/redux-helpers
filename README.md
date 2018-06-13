@@ -37,13 +37,13 @@ function createReactNavigationReduxMiddleware<State: {}>(
 
 ```js
 function reduxifyNavigator(
-  Navigator: Navigator,
+  navigator: Navigator,
   key: string,
 ): React.ComponentType<{ state: NavigationState, dispatch: Dispatch }>;
 ```
 
 * Returns a HOC (higher-order component) that wraps your root navigator.
-* Param `Navigator` is the root navigator for your app.
+* Param `navigator` is the root navigator for your app.
 * Param `key` needs to be consistent with call to `createReactNavigationReduxMiddleware` above.
 * Returns a component to use in place of your root navigator. Pass it `state` and `dispatch` props that you get via `react-redux`'s `connect`.
 
