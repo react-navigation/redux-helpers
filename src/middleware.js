@@ -17,7 +17,8 @@ import { initAction } from './reducer';
 
 const reduxSubscribers = new Map();
 
-// screenProps are a legacy concept in react navigation, and should not be used in redux apps
+// screenProps are a legacy concept in React Navigation,
+// and should not be used in redux apps
 const EMPTY_SCREEN_PROPS = {};
 const getScreenProps = () => EMPTY_SCREEN_PROPS;
 
@@ -32,12 +33,16 @@ function createReactNavigationReduxMiddleware<State: {}>(
     const newState = store.getState();
     const subscribers = reduxSubscribers.get(key);
     invariant(subscribers, `subscribers set should exist for ${key}`);
-    triggerAllSubscribers(key, subscribers, {
-      type: 'action',
-      action,
-      state: navStateSelector(newState),
-      lastState: navStateSelector(oldState),
-    });
+    triggerAllSubscribers(
+      key,
+      subscribers,
+      {
+        type: 'action',
+        action,
+        state: navStateSelector(newState),
+        lastState: navStateSelector(oldState),
+      },
+    );
     return result;
   };
 }
@@ -83,8 +88,8 @@ function createReduxBoundAddListener(key: string) {
   invariant(
     reduxSubscribers.has(key),
     "Cannot listen for a key that isn't associated with a Redux store. " +
-      'First call `createReactNavigationReduxMiddleware` so that we know ' +
-      'when to trigger your listener.',
+      "First call `createReactNavigationReduxMiddleware` so that we know " +
+      "when to trigger your listener.",
   );
   return (eventName: string, handler: NavigationEventCallback) => {
     if (eventName !== 'action') {
@@ -106,15 +111,19 @@ function initializeListeners(key: string, state: NavigationState) {
   invariant(
     subscribers,
     "Cannot initialize listeners for a key that isn't associated with a " +
-      'Redux store. First call `createReactNavigationReduxMiddleware` so ' +
-      'that we know when to trigger your listener.',
+      "Redux store. First call `createReactNavigationReduxMiddleware` so " +
+      "that we know when to trigger your listener.",
   );
-  triggerAllSubscribers(key, subscribers, {
-    type: 'action',
-    action: initAction,
-    state: state,
-    lastState: null,
-  });
+  triggerAllSubscribers(
+    key,
+    subscribers,
+    {
+      type: 'action',
+      action: initAction,
+      state: state,
+      lastState: null,
+    },
+  );
   if (delaySubscriberTriggerUntilReactReduxConnectTriggers) {
     triggerDelayedSubscribers(key);
   }
