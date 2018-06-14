@@ -87,8 +87,8 @@ function createDidUpdateCallback(key: string) {
 function createReduxBoundAddListener(key: string) {
   invariant(
     reduxSubscribers.has(key),
-    "Cannot listen for a key that isn't associated with a Redux store. " +
-      "First call `createReactNavigationReduxMiddleware` so that we know " +
+    "Before calling `reduxifyNavigator`, please call " +
+      "`createReactNavigationReduxMiddleware`, so that we know " +
       "when to trigger your listener.",
   );
   return (eventName: string, handler: NavigationEventCallback) => {
@@ -110,9 +110,9 @@ function initializeListeners(key: string, state: NavigationState) {
   const subscribers = reduxSubscribers.get(key);
   invariant(
     subscribers,
-    "Cannot initialize listeners for a key that isn't associated with a " +
-      "Redux store. First call `createReactNavigationReduxMiddleware` so " +
-      "that we know when to trigger your listener.",
+    "Before calling `reduxifyNavigator`, please call " +
+      "`createReactNavigationReduxMiddleware`, so that we know " +
+      "when to trigger your listener.",
   );
   triggerAllSubscribers(
     key,
@@ -130,8 +130,14 @@ function initializeListeners(key: string, state: NavigationState) {
 }
 
 function createNavigationPropConstructor(key: string) {
-  const actionSubscribers = new Set();
   const reactNavigationAddListener = createReduxBoundAddListener(key);
+  const actionSubscribers = reduxSubscribers.get(key);
+  invariant(
+    actionSubscribers,
+    "Before calling `reduxifyNavigator`, please call " +
+      "`createReactNavigationReduxMiddleware`, so that we know " +
+      "when to trigger your listener.",
+  );
   return <State: NavigationState>(
     dispatch: NavigationDispatch,
     state: State,
