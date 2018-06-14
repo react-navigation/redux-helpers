@@ -30,7 +30,7 @@ function createReactNavigationReduxMiddleware<State: {}>(
 ```
 
 * Returns a middleware that can be applied to a Redux store.
-* Param `key` needs to be unique for the Redux store. Most people only have one store, so can use any string (eg. `"root"`), as long as it's consistent across all calls.
+* Param `key` needs to be unique for the Redux store. Most people only have one store, so can use any string (eg. `"root"`), as long as it's consistent with the call to `reduxifyNavigator` below.
 * Param `navStateSelector` selects the navigation state from your store.
 
 ### `reduxifyNavigator` (required)
@@ -43,8 +43,8 @@ function reduxifyNavigator(
 ```
 
 * Returns a HOC (higher-order component) that wraps your root navigator.
-* Param `navigator` is the root navigator for your app.
-* Param `key` needs to be consistent with call to `createReactNavigationReduxMiddleware` above.
+* Param `navigator` is your root navigator (React component).
+* Param `key` needs to be consistent with the call to `createReactNavigationReduxMiddleware` above.
 * Returns a component to use in place of your root navigator. Pass it `state` and `dispatch` props that you get via `react-redux`'s `connect`.
 
 ### `createNavigationReducer` (optional)
@@ -56,4 +56,4 @@ function createNavigationReducer(navigator: Navigator): Reducer<*, *>;
 * Call `createNavigationReducer` in the global scope to construct a navigation reducer.
 * This basically just wraps `navigator.router.getStateForAction`, which you can call directly if you'd prefer.
 * Param `navigator` is your root navigator (React component).
-* Call this reducer from your master reducer (or combine using `combineReducers`).
+* Call this reducer from your master reducer, or combine using `combineReducers`.
