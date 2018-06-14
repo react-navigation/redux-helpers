@@ -84,28 +84,6 @@ function createDidUpdateCallback(key: string) {
   return triggerDelayedSubscribers.bind(null, key);
 }
 
-function createReduxBoundAddListener(key: string) {
-  invariant(
-    reduxSubscribers.has(key),
-    "Before calling `reduxifyNavigator`, please call " +
-      "`createReactNavigationReduxMiddleware`, so that we know " +
-      "when to trigger your listener.",
-  );
-  return (eventName: string, handler: NavigationEventCallback) => {
-    if (eventName !== 'action') {
-      return { remove: () => {} };
-    }
-    const subscribers = reduxSubscribers.get(key);
-    invariant(subscribers, `subscribers set should exist for ${key}`);
-    subscribers.add(handler);
-    return {
-      remove: () => {
-        subscribers.delete(handler);
-      },
-    };
-  };
-}
-
 function initializeListeners(key: string, state: NavigationState) {
   const subscribers = reduxSubscribers.get(key);
   invariant(
@@ -130,7 +108,6 @@ function initializeListeners(key: string, state: NavigationState) {
 }
 
 function createNavigationPropConstructor(key: string) {
-  const reactNavigationAddListener = createReduxBoundAddListener(key);
   const actionSubscribers = reduxSubscribers.get(key);
   invariant(
     actionSubscribers,
