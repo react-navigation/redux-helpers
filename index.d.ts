@@ -17,9 +17,6 @@ declare module 'react-navigation-redux-helpers' {
   export function createReactNavigationReduxMiddleware<S>
   (key: string, navStateSelector: (state: S) => NavigationState): Middleware;
 
-  export function createReduxBoundAddListener
-  (key: string): (eventName: string, callback: NavigationEventCallback) => NavigationEventSubscription;
-
   export function createNavigationReducer(navigator: Navigator): Reducer<ReducerState>;
 
   export function reduxifyNavigator(
