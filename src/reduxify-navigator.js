@@ -52,7 +52,7 @@ function reduxifyNavigator<State: NavigationState, Props: RequiredProps<State>>(
     }
 
     render() {
-      const { dispatch, state, ...props } = this.props;
+      const { dispatch, state } = this.props;
       this.currentNavProp = propConstructor(
         dispatch,
         state,
@@ -61,7 +61,6 @@ function reduxifyNavigator<State: NavigationState, Props: RequiredProps<State>>(
       );
       return (
         <Navigator
-          {...props}
           navigation={this.currentNavProp}
         />
       );
