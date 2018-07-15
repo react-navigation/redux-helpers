@@ -30,6 +30,7 @@ function reduxifyNavigator<State: NavigationState, Props: RequiredProps<State>>(
     $Diff<Props, RequiredProps<State>>,
   >,
   key: string,
+  setNavigatorRef: (navigatorRef) => void
 ): React.ComponentType<Props> {
   const didUpdateCallback = createDidUpdateCallback(key);
   const propConstructor = createNavigationPropConstructor(key);
@@ -63,6 +64,7 @@ function reduxifyNavigator<State: NavigationState, Props: RequiredProps<State>>(
         <Navigator
           {...props}
           navigation={this.currentNavProp}
+          ref={setNavigatorRef}
         />
       );
     }
