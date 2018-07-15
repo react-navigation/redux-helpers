@@ -39,6 +39,7 @@ function createReactNavigationReduxMiddleware<State: {}>(
 function reduxifyNavigator(
   navigator: Navigator,
   key: string,
+  setNavigatorRef: (navigatorRef) => void
 ): React.ComponentType<{ state: NavigationState, dispatch: Dispatch }>;
 ```
 
@@ -46,6 +47,7 @@ function reduxifyNavigator(
 * `createReactNavigationReduxMiddleware` must be called before this one!
 * Param `navigator` is your root navigator (React component).
 * Param `key` needs to be consistent with the call to `createReactNavigationReduxMiddleware` above.
+* Param `setNavigatorRef` is a callback, where you can set `navigation` to a service to [navigate without navigation prop](https://reactnavigation.org/docs/en/navigating-without-navigation-prop.html).
 * Returns a component to use in place of your root navigator. Pass it `state` and `dispatch` props that you get via `react-redux`'s `connect`.
 
 ### `createNavigationReducer` (optional)
