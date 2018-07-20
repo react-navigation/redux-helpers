@@ -56,7 +56,11 @@ function triggerAllSubscribers(
   payload: NavigationEventPayload,
 ) {
   const trigger = () => subscribers.forEach(subscriber => subscriber(payload));
-  if (!delaySubscriberTriggerUntilReactReduxConnectTriggers) {
+  if (
+    !delaySubscriberTriggerUntilReactReduxConnectTriggers ||
+    !payload.action.type.startsWith("Navigation") ||
+    payload.state === payload.lastState
+  ) {
     trigger();
     return;
   }
