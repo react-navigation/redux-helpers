@@ -7,7 +7,7 @@ declare module 'react-navigation-redux-helpers' {
     NavigationDispatch,
     NavigationScreenProp
   } from 'react-navigation';
-  import React from 'react';
+  import * as React from 'react';
   import { Middleware, Reducer, Dispatch } from 'redux';
 
   export type Navigator = NavigationContainer;
@@ -19,8 +19,8 @@ declare module 'react-navigation-redux-helpers' {
 
   export function createNavigationReducer(navigator: Navigator): Reducer<ReducerState>;
 
-  export function reduxifyNavigator(
+  export function reduxifyNavigator<S>(
     navigator: Navigator,
     key: string,
-  ): React.ComponentType<{ state: NavigationState; dispatch: Dispatch }>;
+  ): React.ComponentType<{ state: NavigationState; dispatch: Dispatch<S> }>;
 }
