@@ -43,7 +43,9 @@ function reduxifyNavigator<State: NavigationState, Props: RequiredProps<State>>(
     }
 
     componentDidUpdate() {
-      didUpdateCallback();
+      setTimeout(() => {
+        didUpdateCallback();
+      }, 0);
     }
 
     getCurrentNavigation = () => {
