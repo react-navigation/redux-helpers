@@ -124,7 +124,7 @@ function createNavigationPropConstructor(key: string) {
     dispatch: NavigationDispatch,
     state: State,
     router: NavigationRouter<*, *>,
-    getCurrentNavigation: () => NavigationScreenProp<State>,
+    getCurrentNavigation: () => ?NavigationScreenProp<State>,
   ): NavigationScreenProp<State> => {
     invariant(
       router,
