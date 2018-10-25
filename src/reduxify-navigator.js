@@ -8,7 +8,6 @@ import type {
 } from 'react-navigation';
 
 import * as React from 'react';
-import invariant from 'invariant';
 
 import {
   initializeListeners,
@@ -47,7 +46,6 @@ function reduxifyNavigator<State: NavigationState, Props: RequiredProps<State>>(
     }
 
     getCurrentNavigation = () => {
-      invariant(this.currentNavProp, "should be set");
       return this.currentNavProp;
     }
 
