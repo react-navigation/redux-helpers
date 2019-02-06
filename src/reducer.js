@@ -1,10 +1,10 @@
 // @flow
 
-import type { NavigationAction, NavigationState } from 'react-navigation';
+import type { NavigationAction, NavigationState } from '@react-navigation/core';
 import type { Reducer } from 'redux';
 import type { Navigator, ReducerState } from './types'
 
-import { NavigationActions } from "react-navigation";
+import { NavigationActions } from "@react-navigation/core";
 
 const initAction = NavigationActions.init();
 

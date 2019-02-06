@@ -8,7 +8,7 @@ import {
   type NavigationScreenProp,
   type NavigationRouter,
   getNavigation,
-} from 'react-navigation';
+} from '@react-navigation/core';
 import type { Middleware } from 'redux';
 
 import invariant from 'invariant';

@@ -6,7 +6,7 @@ declare module 'react-navigation-redux-helpers' {
     NavigationState,
     NavigationDispatch,
     NavigationScreenProp
-  } from 'react-navigation';
+  } from '@react-navigation/core';
   import * as React from 'react';
   import { Middleware, Reducer } from 'redux';
 

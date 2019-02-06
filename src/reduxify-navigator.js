@@ -5,7 +5,7 @@ import type {
   NavigationDispatch,
   NavigationContainer,
   NavigationScreenProp,
-} from 'react-navigation';
+} from '@react-navigation/core';
 
 import * as React from 'react';
 
