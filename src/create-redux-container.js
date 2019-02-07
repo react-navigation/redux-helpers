@@ -28,7 +28,7 @@ function createReduxContainer<State: NavigationState, Props: RequiredProps<State
     *,
     $Diff<Props, RequiredProps<State>>,
   >,
-  key: string,
+  key?: string = "root",
 ): React.ComponentType<Props> {
   const didUpdateCallback = createDidUpdateCallback(key);
   const propConstructor = createNavigationPropConstructor(key);

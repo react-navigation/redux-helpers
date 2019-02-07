@@ -89,28 +89,28 @@ class Root extends React.Component {
 
 ```js
 function createReactNavigationReduxMiddleware<State: {}>(
-  key: string,
   navStateSelector: (state: State) => NavigationState,
+  key?: string,
 ): Middleware<State, *, *>;
 ```
 
 * Returns a middleware that can be applied to a Redux store.
-* Param `key` needs to be unique for the Redux store. Most people only have one store, so can use any string (eg. `"root"`), as long as it's consistent with the call to `createReduxContainer` below.
 * Param `navStateSelector` selects the navigation state from your store.
+* Param `key` needs to be unique for the Redux store and consistent with the call to `createReduxContainer` below. You can leave it out if you only have one store.
 
 ### `createReduxContainer` (required)
 
 ```js
 function createReduxContainer(
   navigator: Navigator,
-  key: string,
+  key?: string,
 ): React.ComponentType<{ state: NavigationState, dispatch: Dispatch }>;
 ```
 
 * Returns a HOC (higher-order component) that wraps your root navigator.
 * `createReactNavigationReduxMiddleware` must be called before this one!
 * Param `navigator` is your root navigator (React component).
-* Param `key` needs to be consistent with the call to `createReactNavigationReduxMiddleware` above.
+* Param `key` needs to be consistent with the call to `createReactNavigationReduxMiddleware` above. You can leave it out if you only have one store.
 * Returns a component to use in place of your root navigator. Pass it `state` and `dispatch` props that you get via `react-redux`'s `connect`.
 
 ### `createNavigationReducer` (optional)

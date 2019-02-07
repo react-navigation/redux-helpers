@@ -14,13 +14,15 @@ declare module 'react-navigation-redux-helpers' {
 
   export type ReducerState = NavigationState | null | undefined;
 
-  export function createReactNavigationReduxMiddleware<S>
-  (key: string, navStateSelector: (state: S) => NavigationState): Middleware;
+  export function createReactNavigationReduxMiddleware<S>(
+    navStateSelector: (state: S) => NavigationState,
+    key?: string,
+  ): Middleware;
 
   export function createNavigationReducer(navigator: Navigator): Reducer<ReducerState>;
 
   export function createReduxContainer<S, P>(
     navigator: Navigator,
-    key: string,
+    key?: string,
   ): React.ComponentType<{ state: NavigationState; dispatch: NavigationDispatch } & P>;
 }

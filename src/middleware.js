@@ -23,8 +23,8 @@ const EMPTY_SCREEN_PROPS = {};
 const getScreenProps = () => EMPTY_SCREEN_PROPS;
 
 function createReactNavigationReduxMiddleware<State: {}>(
-  key: string,
   navStateSelector: (state: State) => NavigationState,
+  key?: string = "root",
 ): Middleware<State, *, *> {
   reduxSubscribers.set(key, new Set());
   return store => next => action => {
