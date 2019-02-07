@@ -4,13 +4,13 @@ This package allows the user to manage their React Navigation state from within 
 
 ## How it works
 
-1. Any navigator can be passed a `navigation` prop to turn it into a "controlled" component, which defers state management to its parent. This mechanism is used in React Navigation to nest navigators, but it can also be used to customize state management.
+1. In React Navigation, "containers" wrap navigators, and own the state for that navigator and any nested navigators. This package implements a container that uses Redux as a backing store.
 2. A Redux middleware is used so that any events that mutate the navigation state properly trigger React Navigation's event listeners.
 3. Finally, a reducer enables React Navigation actions to mutate the Redux state.
 
 ## Motivation
 
-Most projects that are using both Redux and React Navigation don't need this library. And passing `navigation` to the root navigator means that you will have to handle state persistance and `BackHandler` behavior yourself. However, there are some things this library makes easier:
+Most projects that are using both Redux and React Navigation don't need this library. Things like state persistance and `BackHandler` behavior aren't handled directly by `createReduxContainer`, but are handled by the default `createAppContainer`. However, there are some things this library makes easier:
 
 1. It's possible to implement [custom actions](https://github.com/Ashoat/squadcal/blob/4ce900481bbfd1681d568edc669b66b1ae9555f0/native/navigation/navigation-setup.js#L384-L395), allowing you to manipulate the navigation state in ways that aren't possible with the stock React Navigation actions. Though it's possible to implement [custom routers](https://reactnavigation.org/docs/en/custom-routers.html) in React Navigation to do this, it's arguably cleaner via Redux. (If you want animations to run on your action, [make sure](https://github.com/Ashoat/squadcal/blob/4ce900481bbfd1681d568edc669b66b1ae9555f0/native/navigation/navigation-setup.js#L633) to set `isTransitioning` to true!)
 2. This library allows the user to customize the persistance of their navigation state. For instance, you could choose to persist your navigation state in encrypted storage. Most users don't need this, as there are no practical downsides to handling persistance of navigation state and Redux state separately. Note that stock React Navigation supports some basic degree of [persistance customization](https://reactnavigation.org/docs/en/state-persistence.html).
