@@ -93,7 +93,7 @@ function initializeListeners(key: string, state: NavigationState) {
   const subscribers = reduxSubscribers.get(key);
   invariant(
     subscribers,
-    "Before calling `reduxifyNavigator`, please call " +
+    "Before calling `createReduxContainer`, please call " +
       "`createReactNavigationReduxMiddleware`, so that we know " +
       "when to trigger your listener.",
   );
@@ -116,7 +116,7 @@ function createNavigationPropConstructor(key: string) {
   const actionSubscribers = reduxSubscribers.get(key);
   invariant(
     actionSubscribers,
-    "Before calling `reduxifyNavigator`, please call " +
+    "Before calling `createReduxContainer`, please call " +
       "`createReactNavigationReduxMiddleware`, so that we know " +
       "when to trigger your listener.",
   );

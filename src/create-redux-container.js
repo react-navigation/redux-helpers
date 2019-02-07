@@ -22,7 +22,7 @@ type RequiredProps<State: NavigationState> = {
 type InjectedProps<State: NavigationState> = {
   navigation: NavigationScreenProp<State>,
 };
-function reduxifyNavigator<State: NavigationState, Props: RequiredProps<State>>(
+function createReduxContainer<State: NavigationState, Props: RequiredProps<State>>(
   Navigator: NavigationContainer<
     State,
     *,
@@ -71,5 +71,5 @@ function reduxifyNavigator<State: NavigationState, Props: RequiredProps<State>>(
 }
 
 export {
-  reduxifyNavigator,
+  createReduxContainer,
 };

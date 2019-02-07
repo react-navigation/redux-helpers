@@ -19,7 +19,7 @@ declare module 'react-navigation-redux-helpers' {
 
   export function createNavigationReducer(navigator: Navigator): Reducer<ReducerState>;
 
-  export function reduxifyNavigator<S, P>(
+  export function createReduxContainer<S, P>(
     navigator: Navigator,
     key: string,
   ): React.ComponentType<{ state: NavigationState; dispatch: NavigationDispatch } & P>;

@@ -40,7 +40,7 @@ import {
   combineReducers,
 } from 'redux';
 import {
-  reduxifyNavigator,
+  createReduxContainer,
   createReactNavigationReduxMiddleware,
   createNavigationReducer,
 } from 'react-navigation-redux-helpers';
@@ -55,13 +55,13 @@ const appReducer = combineReducers({
   ...
 });
 
-// Note: createReactNavigationReduxMiddleware must be run before reduxifyNavigator
+// Note: createReactNavigationReduxMiddleware must be run before createReduxContainer
 const middleware = createReactNavigationReduxMiddleware(
   "root",
   state => state.nav,
 );
 
-const App = reduxifyNavigator(AppNavigator, "root");
+const App = createReduxContainer(AppNavigator, "root");
 const mapStateToProps = (state) => ({
   state: state.nav,
 });
@@ -95,13 +95,13 @@ function createReactNavigationReduxMiddleware<State: {}>(
 ```
 
 * Returns a middleware that can be applied to a Redux store.
-* Param `key` needs to be unique for the Redux store. Most people only have one store, so can use any string (eg. `"root"`), as long as it's consistent with the call to `reduxifyNavigator` below.
+* Param `key` needs to be unique for the Redux store. Most people only have one store, so can use any string (eg. `"root"`), as long as it's consistent with the call to `createReduxContainer` below.
 * Param `navStateSelector` selects the navigation state from your store.
 
-### `reduxifyNavigator` (required)
+### `createReduxContainer` (required)
 
 ```js
-function reduxifyNavigator(
+function createReduxContainer(
   navigator: Navigator,
   key: string,
 ): React.ComponentType<{ state: NavigationState, dispatch: Dispatch }>;
