@@ -57,11 +57,10 @@ const appReducer = combineReducers({
 
 // Note: createReactNavigationReduxMiddleware must be run before createReduxContainer
 const middleware = createReactNavigationReduxMiddleware(
-  "root",
   state => state.nav,
 );
 
-const App = createReduxContainer(AppNavigator, "root");
+const App = createReduxContainer(AppNavigator);
 const mapStateToProps = (state) => ({
   state: state.nav,
 });
