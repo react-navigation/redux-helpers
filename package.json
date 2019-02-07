@@ -21,8 +21,8 @@
     "index.d.ts"
   ],
   "peerDependencies": {
+    "@react-navigation/core": "*",
     "react": "*",
-    "react-navigation": "*",
     "redux": "*"
   }
 }
