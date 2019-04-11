@@ -47,7 +47,6 @@ function createReactNavigationReduxMiddleware<State: {}>(
   };
 }
 
-let delaySubscriberTriggerUntilReactReduxConnectTriggers = false;
 const delayedTriggers = new Map();
 
 function triggerAllSubscribers(
@@ -57,7 +56,6 @@ function triggerAllSubscribers(
 ) {
   const trigger = () => subscribers.forEach(subscriber => subscriber(payload));
   if (
-    !delaySubscriberTriggerUntilReactReduxConnectTriggers ||
     !payload.action.hasOwnProperty('type') ||
     !payload.action.type.startsWith("Navigation") ||
     payload.state === payload.lastState
@@ -85,7 +83,6 @@ function triggerDelayedSubscribers(key: string) {
 }
 
 function createDidUpdateCallback(key: string) {
-  delaySubscriberTriggerUntilReactReduxConnectTriggers = true;
   return triggerDelayedSubscribers.bind(null, key);
 }
 
@@ -107,9 +104,7 @@ function initializeListeners(key: string, state: NavigationState) {
       lastState: null,
     },
   );
-  if (delaySubscriberTriggerUntilReactReduxConnectTriggers) {
-    triggerDelayedSubscribers(key);
-  }
+  triggerDelayedSubscribers(key);
 }
 
 function createNavigationPropConstructor(key: string) {
