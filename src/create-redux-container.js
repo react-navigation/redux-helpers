@@ -3,8 +3,9 @@
 import type {
   NavigationState,
   NavigationDispatch,
-  NavigationContainer,
+  NavigationNavigator,
   NavigationScreenProp,
+  NavigationNavigatorProps,
 } from '@react-navigation/core';
 
 import * as React from 'react';
@@ -22,19 +23,29 @@ type RequiredProps<State: NavigationState> = {
 type InjectedProps<State: NavigationState> = {
   navigation: NavigationScreenProp<State>,
 };
-function createReduxContainer<State: NavigationState, Props: RequiredProps<State>>(
-  Navigator: NavigationContainer<
+function createReduxContainer<
+  State: NavigationState,
+  Options: {},
+  NavigatorProps: NavigationNavigatorProps<Options, State>,
+  NavigatorType: NavigationNavigator<
     State,
-    *,
-    $Diff<Props, RequiredProps<State>>,
+    Options,
+    NavigatorProps,
   >,
+  ContainerProps: {
+    ...$Diff<NavigatorProps, InjectedProps<State>>,
+    ...$Exact<RequiredProps<State>>,
+  },
+>(
+  Navigator: NavigatorType,
   key?: string = "root",
-): React.ComponentType<Props> {
+): React.ComponentType<ContainerProps> {
   const didUpdateCallback = createDidUpdateCallback(key);
   const propConstructor = createNavigationPropConstructor(key);
 
-  class NavigatorReduxWrapper extends React.PureComponent<Props> {
+  class NavigatorReduxWrapper extends React.PureComponent<ContainerProps> {
 
+    static router = Navigator.router;
     currentNavProp: ?NavigationScreenProp<State>;
 
     componentDidMount() {
