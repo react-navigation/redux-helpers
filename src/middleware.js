@@ -16,6 +16,14 @@ import invariant from 'invariant';
 import { initAction } from './reducer';
 
 const reduxSubscribers = new Map();
+function getReduxSubscribers(key: string): Set<NavigationEventCallback> {
+  let subscribers = reduxSubscribers.get(key);
+  if (!subscribers) {
+    subscribers = new Set();
+    reduxSubscribers.set(key, subscribers);
+  }
+  return subscribers;
+}
 
 // screenProps are a legacy concept in React Navigation,
 // and should not be used in redux apps
@@ -26,16 +34,12 @@ function createReactNavigationReduxMiddleware<State: {}>(
   navStateSelector: (state: State) => NavigationState,
   key?: string = "root",
 ): Middleware<State, *, *> {
-  reduxSubscribers.set(key, new Set());
   return store => next => action => {
     const oldState = store.getState();
     const result = next(action);
     const newState = store.getState();
-    const subscribers = reduxSubscribers.get(key);
-    invariant(subscribers, `subscribers set should exist for ${key}`);
     triggerAllSubscribers(
       key,
-      subscribers,
       {
         type: 'action',
         action,
@@ -49,12 +53,9 @@ function createReactNavigationReduxMiddleware<State: {}>(
 
 const delayedTriggers = new Map();
 
-function triggerAllSubscribers(
-  key: string,
-  subscribers: Set<NavigationEventCallback>,
-  payload: NavigationEventPayload,
-) {
-  const trigger = () => subscribers.forEach(subscriber => subscriber(payload));
+function triggerAllSubscribers(key: string, payload: NavigationEventPayload) {
+  const trigger =
+    () => getReduxSubscribers(key).forEach(subscriber => subscriber(payload));
   if (
     !payload.action.hasOwnProperty('type') ||
     !payload.action.type.startsWith("Navigation") ||
@@ -87,16 +88,8 @@ function createDidUpdateCallback(key: string) {
 }
 
 function initializeListeners(key: string, state: NavigationState) {
-  const subscribers = reduxSubscribers.get(key);
-  invariant(
-    subscribers,
-    "Before calling `createReduxContainer`, please call " +
-      "`createReactNavigationReduxMiddleware`, so that we know " +
-      "when to trigger your listener.",
-  );
   triggerAllSubscribers(
     key,
-    subscribers,
     {
       type: 'action',
       action: initAction,
@@ -108,13 +101,6 @@ function initializeListeners(key: string, state: NavigationState) {
 }
 
 function createNavigationPropConstructor(key: string) {
-  const actionSubscribers = reduxSubscribers.get(key);
-  invariant(
-    actionSubscribers,
-    "Before calling `createReduxContainer`, please call " +
-      "`createReactNavigationReduxMiddleware`, so that we know " +
-      "when to trigger your listener.",
-  );
   return <State: NavigationState>(
     dispatch: NavigationDispatch,
     state: State,
@@ -139,7 +125,7 @@ function createNavigationPropConstructor(key: string) {
       router,
       state,
       dispatch,
-      actionSubscribers,
+      getReduxSubscribers(key),
       getScreenProps,
       getCurrentNavigation,
     );

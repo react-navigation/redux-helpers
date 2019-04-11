@@ -55,7 +55,6 @@ const appReducer = combineReducers({
   ...
 });
 
-// Note: createReactNavigationReduxMiddleware must be run before createReduxContainer
 const middleware = createReactNavigationReduxMiddleware(
   state => state.nav,
 );
@@ -107,7 +106,6 @@ function createReduxContainer(
 ```
 
 * Returns a HOC (higher-order component) that wraps your root navigator.
-* `createReactNavigationReduxMiddleware` must be called before this one!
 * Param `navigator` is your root navigator (React component).
 * Param `key` needs to be consistent with the call to `createReactNavigationReduxMiddleware` above. You can leave it out if you only have one store.
 * Returns a component to use in place of your root navigator. Pass it `state` and `dispatch` props that you get via `react-redux`'s `connect`.
