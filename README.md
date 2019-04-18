@@ -131,7 +131,7 @@ To make Jest tests work with your React Navigation app, you need to [change the 
 "jest": {
   "preset": "react-native",
   "transformIgnorePatterns": [
-    "node_modules/(?!(jest-)?react-native|react-navigation|react-navigation-redux-helpers)"
+    "node_modules/(?!(jest-)?react-native|@?react-navigation|react-navigation-redux-helpers)"
   ]
 }
 ```
