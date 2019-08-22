@@ -35,6 +35,10 @@ function createReactNavigationReduxMiddleware<State: {}>(
   key?: string = "root",
 ): Middleware<State, *, *> {
   return store => next => action => {
+    if (!action) {
+      return
+    }
+
     const oldState = store.getState();
     const result = next(action);
     const newState = store.getState();
