@@ -10,7 +10,8 @@
     "type": "git"
   },
   "dependencies": {
-    "invariant": "^2.2.2"
+    "invariant": "^2.2.2",
+    "react-native-safe-area-context": "^0.3.6"
   },
   "devDependencies": {
     "flow-bin": "^0.108.0",
