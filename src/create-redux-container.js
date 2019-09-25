@@ -10,7 +10,6 @@ import type {
 } from 'react-navigation';
 
 import * as React from 'react';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { ThemeProvider, NavigationProvider } from 'react-navigation';
 
 import {
@@ -89,16 +88,14 @@ function createReduxContainer<
         this.getCurrentNavigation,
       );
       return (
-        <SafeAreaProvider>
-          <ThemeProvider value={this.theme}>
-            <NavigationProvider value={this.currentNavProp}>
-              <Navigator
-                {...props}
-                navigation={this.currentNavProp}
-              />
-            </NavigationProvider>
-          </ThemeProvider>
-        </SafeAreaProvider>
+        <ThemeProvider value={this.theme}>
+          <NavigationProvider value={this.currentNavProp}>
+            <Navigator
+              {...props}
+              navigation={this.currentNavProp}
+            />
+          </NavigationProvider>
+        </ThemeProvider>
       );
     }
 

@@ -10,8 +10,7 @@
     "type": "git"
   },
   "dependencies": {
-    "invariant": "^2.2.2",
-    "react-native-safe-area-context": "^0.3.6"
+    "invariant": "^2.2.2"
   },
   "devDependencies": {
     "flow-bin": "^0.108.0",
@@ -23,7 +22,6 @@
   ],
   "peerDependencies": {
     "react": "*",
-    "react-native-safe-area-context": "*",
     "react-navigation": "*",
     "redux": "*"
   }
