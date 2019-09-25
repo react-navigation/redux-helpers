@@ -1,6 +1,6 @@
 // @flow
 
-declare module '@react-navigation/core' {
+declare module 'react-navigation' {
 
   //---------------------------------------------------------------------------
   // SECTION 1: IDENTICAL TYPE DEFINITIONS
@@ -212,9 +212,11 @@ declare module '@react-navigation/core' {
    * Router
    */
 
+  declare export type NavigationScreenProps = { [key: string]: mixed, ... };
+
   declare export type NavigationScreenOptionsGetter<Options: {...}> = (
     navigation: NavigationScreenProp<NavigationRoute>,
-    screenProps: ?{...},
+    ncreenProps: ?NavigationScreenProps,
     theme: SupportedThemes,
   ) => Options;
 
@@ -260,7 +262,7 @@ declare module '@react-navigation/core' {
 
   declare export type NavigationScreenConfigProps = $Shape<{|
     navigation: NavigationScreenProp<NavigationRoute>,
-    screenProps: {...},
+    screenProps: NavigationScreenProps,
     theme: SupportedThemes,
   |}>;
 
@@ -298,17 +300,15 @@ declare module '@react-navigation/core' {
     withRouter<State, Options> &
     withOptionalNavigationOptions<Options>;
 
+  declare type _NavigationRouteConfigCore = {|
+    navigationOptions?: NavigationScreenConfig<*>,
+    params?: NavigationParams,
+    path?: string,
+  |};
   declare export type NavigationRouteConfig =
     | NavigationComponent
-    | ({
-        navigationOptions?: NavigationScreenConfig<*>,
-        path?: string,
-        ...
-      } & NavigationScreenRouteConfig);
-
-  declare export type NavigationScreenRouteConfig =
-    | { screen: NavigationComponent, ... }
-    | { getScreen: () => NavigationComponent, ... };
+    | {| ..._NavigationRouteConfigCore, screen: NavigationComponent |}
+    | {| ..._NavigationRouteConfigCore, getScreen: () => NavigationComponent |};
 
   declare export type NavigationRouteConfigMap = { [routeName: string]: NavigationRouteConfig, ... };
 
@@ -392,7 +392,7 @@ declare module '@react-navigation/core' {
 
   declare export type NavigationNavigatorProps<O: {...}, S: {...}> = $Shape<{
     navigation: NavigationScreenProp<S>,
-    screenProps?: {...},
+    screenProps?: NavigationScreenProps,
     navigationOptions?: O,
     theme?: SupportedThemes | 'no-preference',
     detached?: boolean,
@@ -421,7 +421,7 @@ declare module '@react-navigation/core' {
     navigation?: NavigationScreenProp<S>,
     persistenceKey?: ?string,
     renderLoadingExperimental?: React$ComponentType<{...}>,
-    screenProps?: *,
+    screenProps?: NavigationScreenProps,
     navigationOptions?: O,
     ...
   }>;
@@ -556,8 +556,9 @@ declare module '@react-navigation/core' {
     cardOverlayEnabled?: boolean,
   |}>;
 
+  declare type _InterpolationResult = { [key: string]: mixed, ... };
   declare export type NavigationStackInterpolator =
-    (props: NavigationStackInterpolatorProps) => {...};
+    (props: NavigationStackInterpolatorProps) => _InterpolationResult;
 
   /**
    * Header
@@ -764,14 +765,14 @@ declare module '@react-navigation/core' {
     getCurrentNavigation: () => ?NavigationScreenProp<State>
   ): NavigationScreenProp<State>;
 
-  declare type _NavigationView<O, S> = React$ComponentType<{
+  declare type _NavigationView<O, S, N: NavigationScreenProp<S>> = React$ComponentType<{
     descriptors: NavigationDescriptorMap,
-    navigation: NavigationScreenProp<S>,
+    navigation: N,
     navigationConfig: *,
     ...
   }>;
-  declare export function createNavigator<O: *, S: *, NavigatorConfig: *>(
-    view: _NavigationView<O, S>,
+  declare export function createNavigator<O: *, S: *, NavigatorConfig: *, N: NavigationScreenProp<S>>(
+    view: _NavigationView<O, S, N>,
     router: NavigationRouter<S, O>,
     navigatorConfig?: NavigatorConfig
   ): NavigationNavigator<S, O, *>;
@@ -877,17 +878,17 @@ declare module '@react-navigation/core' {
     Options: {...}
   >(
     navigation: NavigationScreenProp<State>,
-    screenProps?: {...},
+    screenProps?: NavigationScreenProps,
     theme?: SupportedThemes,
   ): Options;
 
   declare type _SceneViewProps = {
     component: React$ComponentType<{
-      screenProps: ?{...},
+      screenProps: ?NavigationScreenProps,
       navigation: NavigationScreenProp<NavigationRoute>,
       ...
     }>,
-    screenProps: ?{...},
+    screenProps: ?NavigationScreenProps,
     navigation: NavigationScreenProp<NavigationRoute>,
     ...
   };
@@ -916,5 +917,38 @@ declare module '@react-navigation/core' {
   declare export function withNavigationFocus<Props: {...}, ComponentType: React$ComponentType<Props>>(
     Component: ComponentType
   ): React$ComponentType<$Diff<React$ElementConfig<ComponentType>, {| isFocused: ?boolean |}>>;
+
+  declare export function createAppContainer<S: NavigationState, O: {...}>(
+    Component: NavigationNavigator<S, O, *>
+  ): NavigationContainer<S, O, *>;
+
+  declare export function createKeyboardAwareNavigator<Props: {...}>(
+    Comp: React$ComponentType<Props>,
+    stackConfig: {...}
+  ): React$ComponentType<Props>;
+
+  declare export function withOrientation<Props: {...}, ComponentType: React$ComponentType<Props>>(
+    Component: ComponentType
+  ): React$ComponentType<$Diff<React$ElementConfig<ComponentType>, {| isLandscape: boolean |}>>;
+
+  declare type _SafeAreaViewProps = {
+    forceInset?: _SafeAreaViewInsets,
+    children?: React$Node,
+    style?: AnimatedViewStyleProp,
+    ...
+  };
+  declare export var SafeAreaView: React$ComponentType<_SafeAreaViewProps>;
+
+  // These components take the same props that their React Native primitives do
+  // Typing them correctly would be extremely brittle
+  // We await the day we can import types from libraries in flow-typed libdefs
+  declare export var ScrollView: React$ComponentType<{...}>;
+  declare export var FlatList: React$ComponentType<{...}>;
+  declare export var SectionList: React$ComponentType<{...}>;
+  declare export var Themed: {|
+    StatusBar: React$ComponentType<{...}>,
+    Text: React$ComponentType<{...}>,
+    TextInput: React$ComponentType<{...}>,
+  |};
 
 }

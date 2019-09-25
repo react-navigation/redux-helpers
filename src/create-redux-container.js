@@ -7,14 +7,11 @@ import type {
   NavigationScreenProp,
   NavigationNavigatorProps,
   SupportedThemes,
-} from '@react-navigation/core';
+} from 'react-navigation';
 
 import * as React from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import {
-  ThemeProvider,
-  NavigationProvider,
-} from '@react-navigation/core';
+import { ThemeProvider, NavigationProvider } from 'react-navigation';
 
 import {
   initializeListeners,

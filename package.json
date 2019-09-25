@@ -21,9 +21,9 @@
     "index.d.ts"
   ],
   "peerDependencies": {
-    "@react-navigation/core": "*",
     "react": "*",
     "react-native-safe-area-context": "*",
+    "react-navigation": "*",
     "redux": "*"
   }
 }

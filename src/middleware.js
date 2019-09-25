@@ -1,17 +1,17 @@
 // @flow
 
-import {
-  type NavigationEventCallback,
-  type NavigationEventPayload,
-  type NavigationState,
-  type NavigationDispatch,
-  type NavigationScreenProp,
-  type NavigationRouter,
-  getNavigation,
-} from '@react-navigation/core';
+import type {
+  NavigationEventCallback,
+  NavigationEventPayload,
+  NavigationState,
+  NavigationDispatch,
+  NavigationScreenProp,
+  NavigationRouter,
+} from 'react-navigation';
 import type { Middleware } from 'redux';
 
 import invariant from 'invariant';
+import { getNavigation } from 'react-navigation';
 
 import { initAction } from './reducer';
 
