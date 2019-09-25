@@ -23,6 +23,7 @@
   "peerDependencies": {
     "@react-navigation/core": "*",
     "react": "*",
+    "react-native-safe-area-context": "*",
     "redux": "*"
   }
 }
