@@ -10,7 +10,7 @@ import type {
 } from 'react-navigation';
 
 import * as React from 'react';
-import { ThemeProvider, NavigationProvider } from 'react-navigation';
+import { NavigationProvider } from 'react-navigation';
 
 import {
   initializeListeners,
@@ -88,14 +88,12 @@ function createReduxContainer<
         this.getCurrentNavigation,
       );
       return (
-        <ThemeProvider value={this.theme}>
-          <NavigationProvider value={this.currentNavProp}>
-            <Navigator
-              {...props}
-              navigation={this.currentNavProp}
-            />
-          </NavigationProvider>
-        </ThemeProvider>
+        <NavigationProvider value={this.currentNavProp}>
+          <Navigator
+            {...props}
+            navigation={this.currentNavProp}
+          />
+        </NavigationProvider>
       );
     }
 
