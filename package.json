@@ -1,7 +1,7 @@
 {
   "name": "react-navigation-redux-helpers",
   "description": "Redux middleware and utils for React Navigation",
-  "version": "3.0.7",
+  "version": "4.0.0",
   "main": "src/index.js",
   "author": "Ashoat Tevosyan (https://github.com/ashoat)",
   "license": "BSD-2-Clause",
