@@ -1,6 +1,9 @@
+// flow-typed signature: 2cf86c1d5289a8ee234774a4d54dca33
+// flow-typed version: 536c492332/@react-navigation/core_v3.x.x/flow_>=v0.104.x
+
 // @flow
 
-declare module 'react-navigation' {
+declare module '@react-navigation/core' {
 
   //---------------------------------------------------------------------------
   // SECTION 1: IDENTICAL TYPE DEFINITIONS
@@ -216,7 +219,7 @@ declare module 'react-navigation' {
 
   declare export type NavigationScreenOptionsGetter<Options: {...}> = (
     navigation: NavigationScreenProp<NavigationRoute>,
-    ncreenProps: ?NavigationScreenProps,
+    screenProps: ?NavigationScreenProps,
     theme: SupportedThemes,
   ) => Options;
 
@@ -606,16 +609,39 @@ declare module 'react-navigation' {
         ...
       };
 
+  declare type _HeaderBackButtonProps = {|
+    disabled?: boolean,
+    onPress: () => void,
+    pressColorAndroid?: string,
+    tintColor?: ?string,
+    backImage?: React$ComponentType<{
+      tintColor: string,
+      title?: ?string,
+      ...
+    }>,
+    title?: ?string,
+    truncatedTitle?: ?string,
+    backTitleVisible?: boolean,
+    allowFontScaling?: boolean,
+    titleStyle?: ?TextStyleProp,
+    headerLayoutPreset: 'left' | 'center',
+    width?: ?number,
+    scene: NavigationStackScene,
+  |};
+
   declare export type NavigationStackScreenOptions = NavigationScreenOptions & {
     header?: ?(React$Node | (HeaderProps => React$Node)),
     headerTransparent?: boolean,
-    headerTitle?: string | React$Node | React$ElementType,
+    headerTitle?: (props: { children: ?string, ... }) => React$Node | React$Node,
     headerTitleStyle?: AnimatedTextStyleProp,
     headerTitleAllowFontScaling?: boolean,
     headerTintColor?: string,
-    headerLeft?: React$Node | React$ElementType,
+    headerLeft?: ((props: _HeaderBackButtonProps) => React$Node) | React$Node,
     headerBackTitle?: string,
-    headerBackImage?: React$Node | React$ElementType,
+    headerBackImage?: (props: {|
+      tintColor?: string,
+      title?: ?string,
+    |}) => React$Node,
     headerTruncatedBackTitle?: string,
     headerBackTitleStyle?: TextStyleProp,
     headerPressColorAndroid?: string,
@@ -917,38 +943,5 @@ declare module 'react-navigation' {
   declare export function withNavigationFocus<Props: {...}, ComponentType: React$ComponentType<Props>>(
     Component: ComponentType
   ): React$ComponentType<$Diff<React$ElementConfig<ComponentType>, {| isFocused: ?boolean |}>>;
-
-  declare export function createAppContainer<S: NavigationState, O: {...}>(
-    Component: NavigationNavigator<S, O, *>
-  ): NavigationContainer<S, O, *>;
-
-  declare export function createKeyboardAwareNavigator<Props: {...}>(
-    Comp: React$ComponentType<Props>,
-    stackConfig: {...}
-  ): React$ComponentType<Props>;
-
-  declare export function withOrientation<Props: {...}, ComponentType: React$ComponentType<Props>>(
-    Component: ComponentType
-  ): React$ComponentType<$Diff<React$ElementConfig<ComponentType>, {| isLandscape: boolean |}>>;
-
-  declare type _SafeAreaViewProps = {
-    forceInset?: _SafeAreaViewInsets,
-    children?: React$Node,
-    style?: AnimatedViewStyleProp,
-    ...
-  };
-  declare export var SafeAreaView: React$ComponentType<_SafeAreaViewProps>;
-
-  // These components take the same props that their React Native primitives do
-  // Typing them correctly would be extremely brittle
-  // We await the day we can import types from libraries in flow-typed libdefs
-  declare export var ScrollView: React$ComponentType<{...}>;
-  declare export var FlatList: React$ComponentType<{...}>;
-  declare export var SectionList: React$ComponentType<{...}>;
-  declare export var Themed: {|
-    StatusBar: React$ComponentType<{...}>,
-    Text: React$ComponentType<{...}>,
-    TextInput: React$ComponentType<{...}>,
-  |};
 
 }

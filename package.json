@@ -6,7 +6,7 @@
   "author": "Ashoat Tevosyan (https://github.com/ashoat)",
   "license": "BSD-2-Clause",
   "repository": {
-    "url": "git@github.com:react-navigation/react-navigation-redux-helpers.git",
+    "url": "git@github.com:react-navigation/redux-helpers.git",
     "type": "git"
   },
   "dependencies": {
@@ -22,7 +22,7 @@
   ],
   "peerDependencies": {
     "react": "*",
-    "react-navigation": "*",
+    "@react-navigation/core": "*",
     "redux": "*"
   }
 }

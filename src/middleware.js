@@ -7,11 +7,11 @@ import type {
   NavigationDispatch,
   NavigationScreenProp,
   NavigationRouter,
-} from 'react-navigation';
+} from '@react-navigation/core';
 import type { Middleware } from 'redux';
 
 import invariant from 'invariant';
-import { getNavigation } from 'react-navigation';
+import { getNavigation } from '@react-navigation/core';
 
 import { initAction } from './reducer';
 
