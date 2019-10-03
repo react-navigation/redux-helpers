@@ -7,10 +7,10 @@ import type {
   NavigationScreenProp,
   NavigationNavigatorProps,
   SupportedThemes,
-} from 'react-navigation';
+} from '@react-navigation/core';
 
 import * as React from 'react';
-import { NavigationProvider } from 'react-navigation';
+import { NavigationProvider } from '@react-navigation/core';
 
 import {
   initializeListeners,

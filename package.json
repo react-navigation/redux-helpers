@@ -22,7 +22,7 @@
   ],
   "peerDependencies": {
     "react": "*",
-    "react-navigation": "*",
+    "@react-navigation/core": "*",
     "redux": "*"
   }
 }
