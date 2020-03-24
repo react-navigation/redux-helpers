@@ -2,6 +2,10 @@
 
 This package allows the user to manage their React Navigation state from within Redux.
 
+## DEPRECATED as of React Navigation 5
+
+React Navigation no longer supports storing its state within Redux. You should be able to refactor your custom navigation logic into custom navigators, custom routers, and `onStateChange` callbacks.
+
 ## How it works
 
 1. In React Navigation, "containers" wrap navigators, and own the state for that navigator and any nested navigators. This package implements a container that uses Redux as a backing store.
